@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -19,6 +22,8 @@ public class SimpleStocksAppTest {
     public final ExpectedException exception = ExpectedException.none();
 
     private final StockRepository stockRepository = new StockRepository();
+    
+    private final TradeRepository tradeRepository = new TradeRepository();
 
     private final StockService stockService = new StockService();
 
@@ -138,5 +143,25 @@ public class SimpleStocksAppTest {
 	double expectedPerRatio = Double.NaN;
 
 	assertEquals(expectedPerRatio, perRatio, 0.01);
+    }
+    
+    
+    
+    @Test
+    public void testRecordTrade() throws StockNotFoundException {
+	String stockSymbol = "TEA";
+	Stock stock = stockRepository.getStock(stockSymbol);
+	
+	long tradeTime = Calendar.getInstance().getTimeInMillis();
+	double price = 50;
+	int numberOfShares = 1000;
+	
+	Trade newTrade = new Trade(stock, tradeTime, TradeType.BUY, price, numberOfShares); 
+	tradeRepository.addTrade(trade);
+	
+	Trade repoTrade = tradeRepository.getTrade(stock, tradeTime);
+	
+	assertNotNull(repoTrade);
+	assertEquals(newTrade, repoTrade);
     }
 }
