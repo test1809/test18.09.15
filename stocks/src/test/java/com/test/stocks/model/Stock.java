@@ -8,15 +8,19 @@ public class Stock {
     private Double lastDividend;
     private Double parValue;
 
-    public Stock(String stockSymbol, StockType stockType, double lastDividend, double parValue) {
+    private Stock(String stockSymbol, StockType stockType, double lastDividend, double parValue) {
 	this.stockSymbol = stockSymbol;
 	this.stockType = stockType;
 	this.lastDividend = lastDividend;
 	this.parValue = parValue;
     }
 
-    public Stock(String stockSymbol, StockType stockType,  double lastDividend, double parValue, double fixedDividend) {
-	this(stockSymbol, stockType, lastDividend, parValue);
+    public Stock(String stockSymbol, double lastDividend, double parValue) {
+	this(stockSymbol, StockType.COMMON, lastDividend, parValue);
+    }
+
+    public Stock(String stockSymbol, double lastDividend, double parValue, double fixedDividend) {
+	this(stockSymbol, StockType.PREFERRED, lastDividend, parValue);
 	this.fixedDividend = fixedDividend;
     }
 

@@ -5,7 +5,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.test.stocks.exception.StockNotFoundException;
 import com.test.stocks.model.Stock;
-import com.test.stocks.model.StockType;
 
 public class StockRepository {
 
@@ -16,16 +15,16 @@ public class StockRepository {
     }
 
     private void init() {
-	addStock(new Stock("TEA", StockType.COMMON, 0, 100));
-	addStock(new Stock("POP", StockType.COMMON, 8, 100));
-	addStock(new Stock("ALE", StockType.COMMON, 23, 60));
-	addStock(new Stock("GIN", StockType.PREFERRED, 8, 100, 2 / 100));
-	addStock(new Stock("JOE", StockType.COMMON, 13, 250));
+	addStock(new Stock("TEA", 0, 100));
+	addStock(new Stock("POP", 8, 100));
+	addStock(new Stock("ALE", 23, 60));
+	addStock(new Stock("GIN", 8, 100, 2 / 100));
+	addStock(new Stock("JOE", 13, 250));
     }
 
-    public Stock getStock(String stockSymbol) throws StockNotFoundException{
-	Stock stock =  stocks.get(stockSymbol);
-	if (stock == null){
+    public Stock getStock(String stockSymbol) throws StockNotFoundException {
+	Stock stock = stocks.get(stockSymbol);
+	if (stock == null) {
 	    throw new StockNotFoundException();
 	}
 	return stock;

@@ -41,11 +41,12 @@ public class SimpleStocksAppTest {
     @Test
     public void testAddStockToRepository() throws StockNotFoundException {
 	String stockSymbol = "NEW.STOCK";
-	Stock stock = new Stock(stockSymbol, StockType.COMMON, 50, 100);
+	Stock stock = new Stock(stockSymbol, 50, 100);
 	stockRepository.addStock(stock);
 
 	stock = stockRepository.getStock(stockSymbol);
 	assertNotNull(stock);
+	assertEquals(stock.getType(), StockType.COMMON);
     }
 
     @Test
@@ -59,7 +60,9 @@ public class SimpleStocksAppTest {
     @Test
     public void testCalculateDividentForCommonStock() {
 	String stockSymbol = "COMMON.STOCK";
-	Stock stock = new Stock(stockSymbol, StockType.COMMON, 5, 100);
+	Stock stock = new Stock(stockSymbol, 5, 100);
+	assertEquals(stock.getType(), StockType.COMMON);
+	
 	double tickerPrice = 20;
 
 	double dividendYield = dividentCalculator.getDividendYield(stock, tickerPrice);
@@ -71,7 +74,8 @@ public class SimpleStocksAppTest {
     @Test
     public void testCalculateDividentForPreferredStock() {
 	String stockSymbol = "PREFERRED.STOCK";
-	Stock stock = new Stock(stockSymbol, StockType.PREFERRED, 2 / 100, 50, 100);
+	Stock stock = new Stock(stockSymbol, 2 / 100, 50, 100);
+	assertEquals(stock.getType(), StockType.PREFERRED);
 	double tickerPrice = 20;
 
 	double dividendYield = dividentCalculator.getDividendYield(stock, tickerPrice);
