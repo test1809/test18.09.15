@@ -12,7 +12,7 @@ import com.test.stocks.exception.StockNotFoundException;
 import com.test.stocks.model.Stock;
 import com.test.stocks.model.StockType;
 import com.test.stocks.repository.StockRepository;
-import com.test.stocks.service.DividentCalculator;
+import com.test.stocks.service.StockService;
 
 public class SimpleStocksAppTest {
     @Rule
@@ -20,14 +20,14 @@ public class SimpleStocksAppTest {
 
     private final StockRepository stockRepository = new StockRepository();
 
-    private final DividentCalculator dividentCalculator = new DividentCalculator();
+    private final StockService stockService = new StockService();
 
     @Test
     public void testCommonStockHasNullFixedDividend() throws StockNotFoundException {
 	String stockSymbol = "TEA";
 	Stock stock = stockRepository.getStock(stockSymbol);
 	assertEquals(stock.getType(), StockType.COMMON);
-	assertNull(stock.getFixedDivident());
+	assertNull(stock.getFixedDividend());
     }
 
     @Test
@@ -35,7 +35,7 @@ public class SimpleStocksAppTest {
 	String stockSymbol = "GIN";
 	Stock stock = stockRepository.getStock(stockSymbol);
 	assertEquals(stock.getType(), StockType.PREFERRED);
-	assertNotNull(stock.getFixedDivident());
+	assertNotNull(stock.getFixedDividend());
     }
 
     @Test
@@ -62,10 +62,10 @@ public class SimpleStocksAppTest {
 	String stockSymbol = "COMMON.STOCK";
 	Stock stock = new Stock(stockSymbol, 5, 100);
 	assertEquals(stock.getType(), StockType.COMMON);
-	
+
 	double tickerPrice = 20;
 
-	double dividendYield = dividentCalculator.getDividendYield(stock, tickerPrice);
+	double dividendYield = stockService.getDividendYield(stock, tickerPrice);
 	double expectedDividendYield = stock.getLastDividend() / tickerPrice;
 
 	assertEquals(expectedDividendYield, dividendYield, 0.01);
@@ -78,10 +78,65 @@ public class SimpleStocksAppTest {
 	assertEquals(stock.getType(), StockType.PREFERRED);
 	double tickerPrice = 20;
 
-	double dividendYield = dividentCalculator.getDividendYield(stock, tickerPrice);
-	double expectedDividendYield = stock.getFixedDivident() * stock.getParValue() / tickerPrice;
+	double dividendYield = stockService.getDividendYield(stock, tickerPrice);
+	double expectedDividendYield = stock.getFixedDividend() * stock.getParValue() / tickerPrice;
 
 	assertEquals(expectedDividendYield, dividendYield, 0.01);
     }
 
+    @Test
+    public void testCalculatePerForCommonStock() {
+	String stockSymbol = "COMMON.STOCK";
+	Stock stock = new Stock(stockSymbol, 5, 100);
+	assertEquals(stock.getType(), StockType.COMMON);
+
+	double tickerPrice = 20;
+
+	double perRatio = stockService.getPerRatio(stock, tickerPrice);
+	double expectedPerRatio = tickerPrice / stock.getLastDividend();
+
+	assertEquals(expectedPerRatio, perRatio, 0.01);
+    }
+    
+    @Test
+    public void testCalculatePerForCommonStockWithZeroLastDividend() {
+	String stockSymbol = "ZERO.DIVIDEND";
+	Stock stock = new Stock(stockSymbol, 0, 100);
+	assertEquals(stock.getType(), StockType.COMMON);
+
+	double tickerPrice = 20;
+
+	double perRatio = stockService.getPerRatio(stock, tickerPrice);
+	double expectedPerRatio = Double.NaN;
+
+	assertEquals(expectedPerRatio, perRatio, 0.01);
+    }
+
+    @Test
+    public void testCalculatePerForPreferredStock() {
+	String stockSymbol = "PREFERRED.STOCK";
+	Stock stock = new Stock(stockSymbol, 2 / 100, 50, 100);
+	assertEquals(stock.getType(), StockType.PREFERRED);
+	double tickerPrice = 20;
+
+	double perRatio = stockService.getPerRatio(stock, tickerPrice);
+	double expectedPerRatio = tickerPrice / (stock.getFixedDividend() * stock.getParValue());
+
+	assertEquals(expectedPerRatio, perRatio, 0.01);
+    }
+    
+    
+    @Test
+    public void testCalculatePerForPreferredStockWithZeroFixedDividend() {
+	String stockSymbol = "ZERO.DIVIDEND";
+	Stock stock = new Stock(stockSymbol, 8, 100, 0);
+	assertEquals(stock.getType(), StockType.PREFERRED);
+
+	double tickerPrice = 20;
+
+	double perRatio = stockService.getPerRatio(stock, tickerPrice);
+	double expectedPerRatio = Double.NaN;
+
+	assertEquals(expectedPerRatio, perRatio, 0.01);
+    }
 }

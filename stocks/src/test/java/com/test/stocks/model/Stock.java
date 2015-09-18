@@ -15,10 +15,12 @@ public class Stock {
 	this.parValue = parValue;
     }
 
+    /** Constructor for common stocks */
     public Stock(String stockSymbol, double lastDividend, double parValue) {
 	this(stockSymbol, StockType.COMMON, lastDividend, parValue);
     }
 
+    /** Constructor for preferred stocks */
     public Stock(String stockSymbol, double lastDividend, double parValue, double fixedDividend) {
 	this(stockSymbol, StockType.PREFERRED, lastDividend, parValue);
 	this.fixedDividend = fixedDividend;
@@ -28,7 +30,7 @@ public class Stock {
 	return stockType;
     }
 
-    public Double getFixedDivident() {
+    public Double getFixedDividend() {
 	return fixedDividend;
     }
 
