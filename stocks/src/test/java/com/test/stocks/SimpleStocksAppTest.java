@@ -23,7 +23,7 @@ public class SimpleStocksAppTest {
     private final DividentCalculator dividentCalculator = new DividentCalculator();
 
     @Test
-    public void testCommonStockHasNullFixedDividend() {
+    public void testCommonStockHasNullFixedDividend() throws StockNotFoundException {
 	String stockSymbol = "TEA";
 	Stock stock = stockRepository.getStock(stockSymbol);
 	assertEquals(stock.getType(), StockType.COMMON);
@@ -31,7 +31,7 @@ public class SimpleStocksAppTest {
     }
 
     @Test
-    public void testPreferredStockHasNotNullFixedDividend() {
+    public void testPreferredStockHasNotNullFixedDividend() throws StockNotFoundException {
 	String stockSymbol = "GIN";
 	Stock stock = stockRepository.getStock(stockSymbol);
 	assertEquals(stock.getType(), StockType.PREFERRED);
@@ -54,7 +54,6 @@ public class SimpleStocksAppTest {
 
 	String stockSymbol = "INVALID";
 	stockRepository.getStock(stockSymbol);
-
     }
 
     @Test
@@ -63,9 +62,10 @@ public class SimpleStocksAppTest {
 	Stock stock = new Stock(stockSymbol, StockType.COMMON, 5, 100);
 	double tickerPrice = 20;
 
-	double dividendYield = dividentCalculator.getDividendYield(stock);
+	double dividendYield = dividentCalculator.getDividendYield(stock, tickerPrice);
+	double expectedDividendYield = stock.getLastDividend() / tickerPrice;
 
-	assertEquals(dividendYield, 5 / tickerPrice, 0.01);
+	assertEquals(expectedDividendYield, dividendYield, 0.01);
     }
 
     @Test
@@ -74,9 +74,10 @@ public class SimpleStocksAppTest {
 	Stock stock = new Stock(stockSymbol, StockType.PREFERRED, 2 / 100, 50, 100);
 	double tickerPrice = 20;
 
-	double dividendYield = dividentCalculator.getDividendYield(stock);
+	double dividendYield = dividentCalculator.getDividendYield(stock, tickerPrice);
+	double expectedDividendYield = stock.getFixedDivident() * stock.getParValue() / tickerPrice;
 
-	assertEquals(dividendYield, stock.getFixedDivident() * stock.getParValue() / tickerPrice, 0.01);
+	assertEquals(expectedDividendYield, dividendYield, 0.01);
     }
 
 }

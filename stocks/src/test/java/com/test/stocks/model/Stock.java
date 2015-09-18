@@ -24,7 +24,7 @@ public class Stock {
 	return stockType;
     }
 
-    public double getFixedDivident() {
+    public Double getFixedDivident() {
 	return fixedDividend;
     }
 
@@ -32,11 +32,11 @@ public class Stock {
 	return stockSymbol;
     }
 
-    public double getLastDividend() {
+    public Double getLastDividend() {
 	return lastDividend;
     }
 
-    public double getParValue() {
+    public Double getParValue() {
 	return parValue;
     }
 }
