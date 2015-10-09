@@ -1,8 +1,12 @@
-package com.test.stocks.service;
+package com.jpm.stocks.service;
 
-import com.test.stocks.model.Stock;
+import java.util.List;
+
+import com.jpm.stocks.model.Stock;
+import com.jpm.stocks.model.Trade;
 
 public class StockService {
+
     public double getDividendYield(Stock stock, double tickerPrice) {
 	double dividendYield = Double.NaN;
 
@@ -38,5 +42,17 @@ public class StockService {
 	    break;
 	}
 	return perRatio;
+    }
+
+    public double getStockPrice(List<Trade> trades, long timeLimitForPrice) {
+	double value = 0;
+	long sumShares = 0;
+
+	for (Trade trade : trades) {
+	    value += trade.getNumberOfShares() * trade.getPrice();
+	    sumShares += trade.getNumberOfShares();
+	}
+
+	return value / sumShares;
     }
 }
