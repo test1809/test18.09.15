@@ -13,6 +13,7 @@ Fixed the failing tests.
 After the tests passed I did a small refactoring: now there are 2 Stock constructors, one for common stocks and another one for preferred stocks.
 The Fixed Dividend constructor parameter is required for a preferred stock and should not be provided and for a common stock.
 Further an Abstract Stock base class could be created which could be extended by CommonStock and PreferredStock or a factory could be used for Stock instantiation.
+5. Assumed that PER for preferred stocks is calculated using the fixed dividend.
 
 Added tests for calculating PER for common stocks and preferred stocks respectively. Added a test for a preferred stock with 0 fixed dividend but not sure if such stock exists.
 
