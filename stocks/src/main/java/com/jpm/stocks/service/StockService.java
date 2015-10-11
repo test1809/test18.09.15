@@ -44,6 +44,11 @@ public class StockService {
 	}
 	return perRatio;
     }
+
+    public BigDecimal getStockPrice(String stockSymbol) {
+	// TODO Auto-generated method stub
+	return null;
+    }
     
     
 }

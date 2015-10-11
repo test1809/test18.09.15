@@ -36,7 +36,8 @@ Using BigDecimal in calculations results in a much lower performance than using 
 When precision is required but it is not possible to use BigDecimal there are other options like using long or int and keep track of the decimal point.
 For this test I have decided to use BigDecimal as there are no performance requirements.
 
-Added tests for stock price calculation
+Added tests for stock price calculation.
+Fixed tests compilation  by creating required method, classes.
 
 
 

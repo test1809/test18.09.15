@@ -13,7 +13,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.jpm.stocks.exception.InvalidStockSymbolException;
+import com.jpm.stocks.exception.StockWithoutTradesWithinPriceIntervalException;
 import com.jpm.stocks.model.Stock;
 import com.jpm.stocks.model.StockType;
 import com.jpm.stocks.model.Trade;
@@ -133,7 +133,6 @@ public class StockServiceTest {
     public void calculatePerForPreferredStockWithZeroFixedDividend() {
 	String stockSymbol = "ZERO.DIVIDEND";
 	Stock stock = new Stock(stockSymbol, new BigDecimal(8, MATH_CONTEXT), ONE_HUNDRED, BigDecimal.ZERO);
-
 	BigDecimal perRatio = stockService.getPerRatio(stock, TWENTY);
 	assertNull(perRatio);
     }
@@ -141,7 +140,6 @@ public class StockServiceTest {
     @Test
     public void calculatePriceFor4Trades() {
 	String stockSymbol = "TEA";
-
 	BigDecimal stockPrice = stockService.getStockPrice(stockSymbol);
 	BigDecimal expectedStockPrice = FIFTY.add(BigDecimal.ONE);
 	assertEquals(expectedStockPrice.compareTo(stockPrice), 0);
@@ -150,7 +148,6 @@ public class StockServiceTest {
     @Test
     public void calculatePriceFor1Trade() {
 	String stockSymbol = "POP";
-
 	BigDecimal stockPrice = stockService.getStockPrice(stockSymbol);
 	BigDecimal expectedStockPrice = FIFTY;
 	assertEquals(expectedStockPrice.compareTo(stockPrice), 0);
@@ -160,7 +157,6 @@ public class StockServiceTest {
     public void calculatePriceForStockWithoutTrades() throws Exception {
 	exception.expect(StockWithoutTradesWithinPriceIntervalException.class);
 	String stockSymbol = "ALE";
-
 	stockService.getStockPrice(stockSymbol);
     }
 
@@ -168,14 +164,12 @@ public class StockServiceTest {
     public void calculatePriceForStockWithoutTradesWithinPriceInterval() throws Exception {
 	exception.expect(StockWithoutTradesWithinPriceIntervalException.class);
 	String stockSymbol = "GIN";
-
 	stockService.getStockPrice(stockSymbol);
     }
     
     @Test
     public void calculatePriceFor2TradesWithinAnd2OutsitePriceInterval() throws Exception {
 	String stockSymbol = "JOE";
-
 	BigDecimal stockPrice = stockService.getStockPrice(stockSymbol);
 	BigDecimal expectedStockPrice = FOURTY;
 	assertEquals(expectedStockPrice.compareTo(stockPrice), 0);
