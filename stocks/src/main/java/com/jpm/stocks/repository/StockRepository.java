@@ -9,4 +9,5 @@ public interface StockRepository {
     Stock getStock(String stockSymbol) throws StockNotFoundException;
 
     void addStock(Stock stock) throws InvalidStockException, InvalidStockSymbolException;
+
 }

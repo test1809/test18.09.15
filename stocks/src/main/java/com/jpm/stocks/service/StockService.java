@@ -1,58 +1,48 @@
 package com.jpm.stocks.service;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 import com.jpm.stocks.model.Stock;
-import com.jpm.stocks.model.Trade;
+import com.jpm.stocks.repository.StockRepository;
+import com.jpm.stocks.repository.impl.GBCESampleStockRepository;
 
 public class StockService {
+    private static final MathContext MATH_CONTEXT = MathContext.DECIMAL64;
+    private static final RoundingMode ROUNDING_MODE = MATH_CONTEXT.getRoundingMode();
+    private static final int SCALE = 2;
 
-    public double getDividendYield(Stock stock, double tickerPrice) {
-	double dividendYield = Double.NaN;
+    StockRepository stockRepository = new GBCESampleStockRepository();
 
+    public BigDecimal getDividendYield(Stock stock, BigDecimal tickerPrice) {
+	BigDecimal dividendYield = null;
 	switch (stock.getType()) {
 	case COMMON:
-	    dividendYield = stock.getLastDividend() / tickerPrice;
+	    dividendYield = stock.getLastDividend().divide(tickerPrice, SCALE, ROUNDING_MODE);
 	    break;
 	case PREFERRED:
-	    dividendYield = stock.getFixedDividend() * stock.getParValue() / tickerPrice;
+	    dividendYield = stock.getFixedDividend().multiply(stock.getParValue(), MATH_CONTEXT).divide(tickerPrice, SCALE, ROUNDING_MODE);
 	    break;
 	}
-
 	return dividendYield;
     }
 
-    public double getPerRatio(Stock stock, double tickerPrice) {
-	double perRatio = Double.NaN;
+    public BigDecimal getPerRatio(Stock stock, BigDecimal tickerPrice) {
+	BigDecimal perRatio = null;
 
 	switch (stock.getType()) {
 	case COMMON:
-	    if (stock.getLastDividend() == 0) {
-		perRatio = Double.NaN;
-	    } else {
-		perRatio = tickerPrice / stock.getLastDividend();
+	    if (BigDecimal.ZERO.compareTo(stock.getLastDividend()) != 0) {
+		perRatio = tickerPrice.divide(stock.getLastDividend(), SCALE, ROUNDING_MODE);
 	    }
 	    break;
 	case PREFERRED:
-	    if (stock.getFixedDividend() == 0) {
-		perRatio = Double.NaN;
-	    } else {
-		perRatio = tickerPrice / (stock.getFixedDividend() * stock.getParValue());
+	    if (BigDecimal.ZERO.compareTo(stock.getFixedDividend()) != 0) {
+		perRatio = tickerPrice.divide(stock.getFixedDividend().multiply(stock.getParValue(), MATH_CONTEXT), SCALE, ROUNDING_MODE);
 	    }
 	    break;
 	}
 	return perRatio;
-    }
-
-    public double getStockPrice(List<Trade> trades, long timeLimitForPrice) {
-	double value = 0;
-	long sumShares = 0;
-
-	for (Trade trade : trades) {
-	    value += trade.getNumberOfShares() * trade.getPrice();
-	    sumShares += trade.getNumberOfShares();
-	}
-
-	return value / sumShares;
     }
 }

@@ -1,14 +1,16 @@
 package com.jpm.stocks.model;
 
-public class Stock {
+import java.math.BigDecimal;
 
+public class Stock {
     private StockType stockType;
     private String stockSymbol;
-    private Double fixedDividend;
-    private Double lastDividend;
-    private Double parValue;
+    private BigDecimal fixedDividend;
+    private BigDecimal lastDividend;
+    private BigDecimal parValue;
+    
 
-    private Stock(String stockSymbol, StockType stockType, double lastDividend, double parValue) {
+    private Stock(String stockSymbol, StockType stockType, BigDecimal lastDividend, BigDecimal parValue) {
 	this.stockSymbol = stockSymbol;
 	this.stockType = stockType;
 	this.lastDividend = lastDividend;
@@ -16,12 +18,12 @@ public class Stock {
     }
 
     /** Constructor for common stocks */
-    public Stock(String stockSymbol, double lastDividend, double parValue) {
+    public Stock(String stockSymbol, BigDecimal lastDividend, BigDecimal parValue) {
 	this(stockSymbol, StockType.COMMON, lastDividend, parValue);
     }
 
     /** Constructor for preferred stocks */
-    public Stock(String stockSymbol, double lastDividend, double parValue, double fixedDividend) {
+    public Stock(String stockSymbol, BigDecimal lastDividend, BigDecimal parValue, BigDecimal fixedDividend) {
 	this(stockSymbol, StockType.PREFERRED, lastDividend, parValue);
 	this.fixedDividend = fixedDividend;
     }
@@ -30,7 +32,7 @@ public class Stock {
 	return stockType;
     }
 
-    public Double getFixedDividend() {
+    public BigDecimal getFixedDividend() {
 	return fixedDividend;
     }
 
@@ -38,11 +40,11 @@ public class Stock {
 	return stockSymbol;
     }
 
-    public Double getLastDividend() {
+    public BigDecimal getLastDividend() {
 	return lastDividend;
     }
 
-    public Double getParValue() {
+    public BigDecimal getParValue() {
 	return parValue;
     }
 
@@ -91,6 +93,5 @@ public class Stock {
 	    return false;
 	return true;
     }
-    
-    
+
 }

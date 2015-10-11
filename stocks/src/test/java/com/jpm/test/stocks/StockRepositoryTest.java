@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.math.BigDecimal;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -20,6 +22,10 @@ public class StockRepositoryTest {
     public final ExpectedException exception = ExpectedException.none();
 
     private final StockRepository stockRepository = new GBCESampleStockRepository();
+
+    private static final BigDecimal FIFTY = BigDecimal.valueOf(50);
+    private static final BigDecimal ONE_HUNDRED = BigDecimal.valueOf(100);
+
     
     @Test
     public void commonStockHasNullFixedDividend() throws StockNotFoundException {
@@ -35,22 +41,21 @@ public class StockRepositoryTest {
 	Stock stock = stockRepository.getStock(stockSymbol);
 	assertEquals(stock.getType(), StockType.PREFERRED);
 	assertNotNull(stock.getFixedDividend());
+	assertEquals(0.02, stock.getFixedDividend().doubleValue(), 0.01);
     }
-    
 
     @Test
     public void addNullStock() throws Exception {
 	exception.expect(InvalidStockException.class);
-	
+
 	Stock stock = null;
 	stockRepository.addStock(stock);
     }
-    
-    
+
     @Test
     public void addStockToRepository() throws Exception {
 	String stockSymbol = "NEW.STOCK";
-	Stock stock = new Stock(stockSymbol, 50, 100);
+	Stock stock = new Stock(stockSymbol, FIFTY, ONE_HUNDRED);
 	stockRepository.addStock(stock);
 	stock = stockRepository.getStock(stockSymbol);
 	assertNotNull(stock);
