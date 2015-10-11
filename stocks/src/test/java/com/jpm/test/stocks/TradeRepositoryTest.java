@@ -26,7 +26,6 @@ public class TradeRepositoryTest {
     public final ExpectedException exception = ExpectedException.none();
 
     private final StockRepository stockRepository = new GBCESampleStockRepository();
-
     private final TradeRepository tradeRepository = new TradeRepositoryImpl();
     
     private static final MathContext MATH_CONTEXT = MathContext.DECIMAL64;

@@ -14,8 +14,6 @@ public class StockService {
     private static final RoundingMode ROUNDING_MODE = MATH_CONTEXT.getRoundingMode();
     private static final int SCALE = 2;
 
-    private StockRepository stockRepository = new GBCESampleStockRepository();
-
     public BigDecimal getDividendYield(Stock stock, BigDecimal tickerPrice) {
 	BigDecimal dividendYield = null;
 	switch (stock.getType()) {
@@ -47,7 +45,5 @@ public class StockService {
 	return perRatio;
     }
     
-    public Stock getStock(String stockSymbol) throws StockNotFoundException{
-	return stockRepository.getStock(stockSymbol);
-    }
+    
 }
