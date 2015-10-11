@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
+import com.jpm.stocks.exception.StockNotFoundException;
 import com.jpm.stocks.model.Stock;
 import com.jpm.stocks.repository.StockRepository;
 import com.jpm.stocks.repository.impl.GBCESampleStockRepository;
@@ -13,7 +14,7 @@ public class StockService {
     private static final RoundingMode ROUNDING_MODE = MATH_CONTEXT.getRoundingMode();
     private static final int SCALE = 2;
 
-    StockRepository stockRepository = new GBCESampleStockRepository();
+    private StockRepository stockRepository = new GBCESampleStockRepository();
 
     public BigDecimal getDividendYield(Stock stock, BigDecimal tickerPrice) {
 	BigDecimal dividendYield = null;
@@ -44,5 +45,9 @@ public class StockService {
 	    break;
 	}
 	return perRatio;
+    }
+    
+    public Stock getStock(String stockSymbol) throws StockNotFoundException{
+	return stockRepository.getStock(stockSymbol);
     }
 }

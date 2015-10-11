@@ -1,6 +1,7 @@
 package com.jpm.test.stocks;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,8 +18,10 @@ public class StockValidatorTest {
 
     private StockValidator stockValidator = new StockValidator();
     
-    private static final BigDecimal FIFTY =  BigDecimal.valueOf(50);
-    private static final BigDecimal ONE_HUNDRED = BigDecimal.valueOf(100);
+    private static final MathContext MATH_CONTEXT = MathContext.DECIMAL64;
+    
+    private static final BigDecimal FIFTY =  new BigDecimal(50, MATH_CONTEXT);
+    private static final BigDecimal ONE_HUNDRED = new BigDecimal(100, MATH_CONTEXT);
 
     @Test
     public void nullStock() throws Exception {

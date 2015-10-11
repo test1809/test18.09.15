@@ -1,6 +1,7 @@
 package com.jpm.test.stocks;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -25,10 +26,10 @@ public class StockServiceTest {
     private static final RoundingMode ROUNDING_MODE = MATH_CONTEXT.getRoundingMode();
     private static final int SCALE = 2;
 
-    private static final BigDecimal TWENTY = BigDecimal.valueOf(20);
-    private static final BigDecimal FIVE = BigDecimal.valueOf(5);
-    private static final BigDecimal TWO = BigDecimal.valueOf(2);
-    private static final BigDecimal ONE_HUNDRED = BigDecimal.valueOf(100);
+    private static final BigDecimal TWENTY = new BigDecimal(20, MATH_CONTEXT);
+    private static final BigDecimal FIVE = new BigDecimal(5, MATH_CONTEXT);
+    private static final BigDecimal TWO = new BigDecimal(2, MATH_CONTEXT);
+    private static final BigDecimal ONE_HUNDRED = new BigDecimal(100, MATH_CONTEXT);
 
     private Stock commonStock;
     private Stock preferredStock;
@@ -38,7 +39,7 @@ public class StockServiceTest {
 	commonStock = new Stock("COMMON.STOCK", FIVE, ONE_HUNDRED);
 	preferredStock = new Stock("PREFERRED.STOCK", TWO.divide(ONE_HUNDRED, SCALE, ROUNDING_MODE), FIVE, ONE_HUNDRED);
     }
-    
+
     @Test
     public void stockTypeCorrectlyAssigned() {
 	assertEquals(commonStock.getType(), StockType.COMMON);
@@ -56,7 +57,8 @@ public class StockServiceTest {
     @Test
     public void calculateDividentForPreferredStock() {
 	BigDecimal dividendYield = stockService.getDividendYield(preferredStock, TWENTY);
-	BigDecimal expectedDividendYield = preferredStock.getFixedDividend().multiply(preferredStock.getParValue()).divide(TWENTY, SCALE, ROUNDING_MODE);
+	BigDecimal expectedDividendYield = preferredStock.getFixedDividend().multiply(preferredStock.getParValue(), MATH_CONTEXT).divide(TWENTY,
+		SCALE, ROUNDING_MODE);
 
 	assertEquals(expectedDividendYield.compareTo(dividendYield), 0);
     }
@@ -82,7 +84,8 @@ public class StockServiceTest {
     @Test
     public void calculatePerForPreferredStock() {
 	BigDecimal perRatio = stockService.getPerRatio(preferredStock, TWENTY);
-	BigDecimal expectedPerRatio = TWENTY.divide(preferredStock.getFixedDividend().multiply(preferredStock.getParValue()), SCALE, ROUNDING_MODE);
+	BigDecimal expectedPerRatio = TWENTY.divide(preferredStock.getFixedDividend().multiply(preferredStock.getParValue(), MATH_CONTEXT), SCALE,
+		ROUNDING_MODE);
 
 	assertEquals(expectedPerRatio.compareTo(perRatio), 0);
 	assertEquals(perRatio.scale(), SCALE);
@@ -91,7 +94,16 @@ public class StockServiceTest {
     @Test
     public void calculatePerForPreferredStockWithZeroFixedDividend() {
 	String stockSymbol = "ZERO.DIVIDEND";
-	Stock stock = new Stock(stockSymbol, BigDecimal.valueOf(8), ONE_HUNDRED, BigDecimal.ZERO);
+	Stock stock = new Stock(stockSymbol, new BigDecimal(8, MATH_CONTEXT), ONE_HUNDRED, BigDecimal.ZERO);
+
+	BigDecimal perRatio = stockService.getPerRatio(stock, TWENTY);
+	assertNull(perRatio);
+    }
+
+    @Test
+    public void calculatePriceForPreferredStock() {
+	String stockSymbol = "ZERO.DIVIDEND";
+	Stock stock = new Stock(stockSymbol, new BigDecimal(8, MATH_CONTEXT), ONE_HUNDRED, BigDecimal.ZERO);
 
 	BigDecimal perRatio = stockService.getPerRatio(stock, TWENTY);
 	assertNull(perRatio);

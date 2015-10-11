@@ -1,14 +1,16 @@
 package com.jpm.stocks.model;
 
+import java.math.BigDecimal;
+
 public class Trade {
 
     private Stock stock;
-    private Long tradeTime;
+    private long tradeTime;
     private TradeType tradeType;
-    private Integer numberOfShares;
-    private Double price;
+    private int numberOfShares;
+    private BigDecimal price;
 
-    public Trade(Stock stock, long tradeTime, TradeType tradeType, double price, int numberOfShares) {
+    public Trade(Stock stock, long tradeTime, TradeType tradeType, BigDecimal price, int numberOfShares) {
 	this.stock = stock;
 	this.tradeTime = tradeTime;
 	this.tradeType = tradeType;
@@ -32,7 +34,7 @@ public class Trade {
 	return numberOfShares;
     }
     
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
@@ -41,9 +43,7 @@ public class Trade {
 	final int prime = 31;
 	int result = 1;
 	result = prime * result + numberOfShares;
-	long temp;
-	temp = Double.doubleToLongBits(price);
-	result = prime * result + (int) (temp ^ (temp >>> 32));
+	result = prime * result + ((price == null) ? 0 : price.hashCode());
 	result = prime * result + ((stock == null) ? 0 : stock.hashCode());
 	result = prime * result + (int) (tradeTime ^ (tradeTime >>> 32));
 	result = prime * result + ((tradeType == null) ? 0 : tradeType.hashCode());
@@ -61,7 +61,10 @@ public class Trade {
 	Trade other = (Trade) obj;
 	if (numberOfShares != other.numberOfShares)
 	    return false;
-	if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
+	if (price == null) {
+	    if (other.price != null)
+		return false;
+	} else if (!price.equals(other.price))
 	    return false;
 	if (stock == null) {
 	    if (other.stock != null)
@@ -74,7 +77,4 @@ public class Trade {
 	    return false;
 	return true;
     }
-
-  
-
 }

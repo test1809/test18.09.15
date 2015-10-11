@@ -38,7 +38,7 @@ public class StockValidator {
 	    throw new InvalidStockException();
 	}
     }
-
+    
     private boolean isValidStockSymbol(String stockSymbol) {
 	if (stockSymbol == null || stockSymbol.equals("")) {
 	    return false;

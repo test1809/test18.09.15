@@ -8,7 +8,6 @@ public class Stock {
     private BigDecimal fixedDividend;
     private BigDecimal lastDividend;
     private BigDecimal parValue;
-    
 
     private Stock(String stockSymbol, StockType stockType, BigDecimal lastDividend, BigDecimal parValue) {
 	this.stockSymbol = stockSymbol;

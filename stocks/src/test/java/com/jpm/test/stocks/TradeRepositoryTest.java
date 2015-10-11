@@ -3,6 +3,8 @@ package com.jpm.test.stocks;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.Calendar;
 import java.util.List;
 
@@ -27,16 +29,18 @@ public class TradeRepositoryTest {
 
     private final TradeRepository tradeRepository = new TradeRepositoryImpl();
     
+    private static final MathContext MATH_CONTEXT = MathContext.DECIMAL64;
+    private static final BigDecimal FIFTY = new BigDecimal(50, MATH_CONTEXT);
+    
     @Test
     public void recordBuyTrade() throws Exception {
 	String stockSymbol = "TEA";
 	Stock stock = stockRepository.getStock(stockSymbol);
 
 	long tradeTime = Calendar.getInstance().getTimeInMillis();
-	double price = 50;
 	int numberOfShares = 1000;
 
-	Trade newTrade = new Trade(stock, tradeTime, TradeType.BUY, price, numberOfShares);
+	Trade newTrade = new Trade(stock, tradeTime, TradeType.BUY, FIFTY, numberOfShares);
 	tradeRepository.addTrade(newTrade);
 
 	List<Trade> repoTrades = tradeRepository.getTradesForStockAtTimestamp(stock, tradeTime);
@@ -58,10 +62,9 @@ public class TradeRepositoryTest {
 	Stock stock = stockRepository.getStock(stockSymbol);
 
 	long tradeTime = Calendar.getInstance().getTimeInMillis();
-	double price = 50;
 	int numberOfShares = 1000;
 
-	Trade newTrade = new Trade(stock, tradeTime, TradeType.SELL, price, numberOfShares);
+	Trade newTrade = new Trade(stock, tradeTime, TradeType.SELL, FIFTY, numberOfShares);
 	tradeRepository.addTrade(newTrade);
 
 	List<Trade> repoTrades = tradeRepository.getTradesForStockAtTimestamp(stock, tradeTime);
@@ -82,13 +85,12 @@ public class TradeRepositoryTest {
 	Stock stock = stockRepository.getStock(stockSymbol);
 
 	long tradeTime = Calendar.getInstance().getTimeInMillis();
-	double price = 50;
 	int numberOfShares = 1000;
 
-	Trade newBuyTrade = new Trade(stock, tradeTime, TradeType.BUY, price, numberOfShares);
+	Trade newBuyTrade = new Trade(stock, tradeTime, TradeType.BUY, FIFTY, numberOfShares);
 	tradeRepository.addTrade(newBuyTrade);
 	
-	Trade newSellTrade = new Trade(stock, tradeTime, TradeType.BUY, price, numberOfShares);
+	Trade newSellTrade = new Trade(stock, tradeTime, TradeType.BUY, FIFTY, numberOfShares);
 	tradeRepository.addTrade(newSellTrade);
 
 	List<Trade> repoTrades = tradeRepository.getTradesForStockAtTimestamp(stock, tradeTime);
@@ -114,10 +116,9 @@ public class TradeRepositoryTest {
 	Stock stock = stockRepository.getStock(stockSymbol);
 
 	long tradeTime = Calendar.getInstance().getTimeInMillis();
-	double price = 50;
 	int numberOfShares = 1000;
 
-	Trade newTrade = new Trade(stock, tradeTime, TradeType.BUY, price, numberOfShares);
+	Trade newTrade = new Trade(stock, tradeTime, TradeType.BUY, FIFTY, numberOfShares);
 	tradeRepository.addTrade(newTrade);
 
 	List<Trade> repoTrades = tradeRepository.getTradesForStockAtTimestamp(stock, tradeTime + 1);
@@ -140,10 +141,9 @@ public class TradeRepositoryTest {
 	Stock stock = stockRepository.getStock(stockSymbol);
 
 	long tradeTime = -1;
-	double price = 50;
 	int numberOfShares = 1000;
 
-	Trade newTrade = new Trade(stock, tradeTime, TradeType.BUY, price, numberOfShares);
+	Trade newTrade = new Trade(stock, tradeTime, TradeType.BUY, FIFTY, numberOfShares);
 	tradeRepository.addTrade(newTrade);
     }
 }

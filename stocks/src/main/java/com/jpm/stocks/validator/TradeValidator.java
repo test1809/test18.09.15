@@ -1,5 +1,7 @@
 package com.jpm.stocks.validator;
 
+import java.math.BigDecimal;
+
 import com.jpm.stocks.exception.InvalidStockException;
 import com.jpm.stocks.exception.InvalidStockSymbolException;
 import com.jpm.stocks.exception.InvalidTradeException;
@@ -21,7 +23,7 @@ public class TradeValidator {
 	    throw new InvalidTradeException();
 	}
 
-	if (trade.getPrice() == null || trade.getPrice() <= 0) {
+	if (trade.getPrice() == null || trade.getPrice().compareTo(BigDecimal.ZERO) < 0) {
 	    throw new InvalidTradeException();
 	}
 	stockValidator.validateStock(trade.getStock());

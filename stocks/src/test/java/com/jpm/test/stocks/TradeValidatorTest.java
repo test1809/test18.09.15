@@ -1,5 +1,7 @@
 package com.jpm.test.stocks;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.Calendar;
 
 import org.junit.Before;
@@ -21,78 +23,76 @@ public class TradeValidatorTest {
     public final ExpectedException exception = ExpectedException.none();
 
     private final StockRepository stockRepository = new GBCESampleStockRepository();
-    
+
     private final TradeValidator tradeValidator = new TradeValidator();
-    
+
     private Stock teaStock;
 
+    private static final MathContext MATH_CONTEXT = MathContext.DECIMAL64;
+    private static final BigDecimal FIFTY = new BigDecimal(50, MATH_CONTEXT);
+
     @Before
-    public void getSampleStocks() throws Exception{
+    public void getSampleStocks() throws Exception {
 	teaStock = stockRepository.getStock("TEA");
     }
-    
+
     @Test
     public void tradeWithInvalidTimestamp() throws Exception {
 	exception.expect(InvalidTradeException.class);
 
 	long tradeTime = -1;
-	double price = 50;
 	int numberOfShares = 1000;
 
-	Trade trade = new Trade(teaStock, tradeTime, TradeType.BUY, price, numberOfShares);
-	
+	Trade trade = new Trade(teaStock, tradeTime, TradeType.BUY, FIFTY, numberOfShares);
+
 	tradeValidator.validateTrade(trade);
     }
-    
-    
+
     @Test
     public void tradeWithNullStock() throws Exception {
 	exception.expect(InvalidStockException.class);
-	
+
 	Stock stock = null;
 
 	long tradeTime = Calendar.getInstance().getTimeInMillis();
-	double price = 50;
 	int numberOfShares = 1000;
 
-	Trade trade = new Trade(stock, tradeTime, TradeType.BUY, price, numberOfShares);
-	
+	Trade trade = new Trade(stock, tradeTime, TradeType.BUY, FIFTY, numberOfShares);
+
 	tradeValidator.validateTrade(trade);
     }
-    
+
     @Test
     public void tradeWithNegativePrice() throws Exception {
 	exception.expect(InvalidTradeException.class);
-	
+
 	long tradeTime = Calendar.getInstance().getTimeInMillis();
-	double price = -50;
+	BigDecimal price = FIFTY.negate(MATH_CONTEXT);
 	int numberOfShares = 1000;
 
 	Trade trade = new Trade(teaStock, tradeTime, TradeType.BUY, price, numberOfShares);
 	tradeValidator.validateTrade(trade);
     }
-    
+
     @Test
     public void tradeWithoutType() throws Exception {
 	exception.expect(InvalidTradeException.class);
-	
+
 	long tradeTime = Calendar.getInstance().getTimeInMillis();
-	double price = 50;
 	int numberOfShares = 1000;
 
-	Trade trade = new Trade(teaStock, tradeTime, null, price, numberOfShares);
+	Trade trade = new Trade(teaStock, tradeTime, null, FIFTY, numberOfShares);
 	tradeValidator.validateTrade(trade);
     }
-    
+
     @Test
     public void tradeWithInvalidSharesNumber() throws Exception {
 	exception.expect(InvalidTradeException.class);
-	
+
 	long tradeTime = Calendar.getInstance().getTimeInMillis();
-	double price = 50;
 	int numberOfShares = 0;
 
-	Trade trade = new Trade(teaStock, tradeTime, null, price, numberOfShares);
+	Trade trade = new Trade(teaStock, tradeTime, null, FIFTY, numberOfShares);
 	tradeValidator.validateTrade(trade);
     }
 }
