@@ -24,7 +24,7 @@ Fixed the test compilation errors by adding
 				TradeReposotory class with a method to get the trades for stock at a given time.				
 Implemented the service methods so that the tests pass.
 
-4.Refactoring
+4. Refactoring
 Renamed the packages and the test methods.
 
 Added GBCESampleStockRepository class and StockRepository interface so that there will be a dependency of an abstraction and not on a class that contains sample data.
