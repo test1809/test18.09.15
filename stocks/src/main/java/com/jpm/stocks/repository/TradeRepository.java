@@ -12,4 +12,6 @@ public interface TradeRepository {
     void addTrade(Trade newTrade) throws InvalidTradeException, InvalidStockException, InvalidStockSymbolException;
 
     List<Trade> getTradesForStockAtTimestamp(Stock stock, long tradeTime);
+    
+    List<Trade> getTradesForStockAfterTimestamp(Stock stock, long time);
 }

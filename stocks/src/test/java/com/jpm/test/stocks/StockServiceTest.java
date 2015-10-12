@@ -52,7 +52,9 @@ public class StockServiceTest {
 	preferredStock = new Stock("PREFERRED.STOCK", TWO.divide(ONE_HUNDRED, SCALE, ROUNDING_MODE), FIVE, ONE_HUNDRED);
 
 	StockRepository stockRepository = new GBCESampleStockRepository();
+	stockService.setStockRepository(stockRepository);
 	TradeRepository tradeRepository = new TradeRepositoryImpl();
+	stockService.setTradeRepository(tradeRepository);
 
 	int numberOfShares = 1000;
 	Calendar calendar = Calendar.getInstance();
@@ -70,7 +72,7 @@ public class StockServiceTest {
 	long tradeTimeOutsideInterval = calendar.getTimeInMillis() - (MAX_MINUTES_FOR_PRICE_CALCULATION + 1) * 60 * 1000;
 	Stock ginStock = stockRepository.getStock("GIN");
 	tradeRepository.addTrade(new Trade(ginStock, tradeTimeOutsideInterval, TradeType.SELL, TWO, numberOfShares));
-	
+
 	Stock joeStock = stockRepository.getStock("JOE");
 	tradeRepository.addTrade(new Trade(joeStock, tradeTime, TradeType.SELL, FOURTY, numberOfShares));
 	tradeRepository.addTrade(new Trade(joeStock, tradeTime, TradeType.BUY, FOURTY, numberOfShares));
@@ -89,7 +91,7 @@ public class StockServiceTest {
 	BigDecimal dividendYield = stockService.getDividendYield(commonStock, TWENTY);
 	BigDecimal expectedDividendYield = commonStock.getLastDividend().divide(TWENTY, SCALE, ROUNDING_MODE);
 
-	assertEquals(expectedDividendYield.compareTo(dividendYield), 0);
+	assertEquals(0, expectedDividendYield.compareTo(dividendYield));
     }
 
     @Test
@@ -98,7 +100,7 @@ public class StockServiceTest {
 	BigDecimal expectedDividendYield = preferredStock.getFixedDividend().multiply(preferredStock.getParValue(), MATH_CONTEXT).divide(TWENTY,
 		SCALE, ROUNDING_MODE);
 
-	assertEquals(expectedDividendYield.compareTo(dividendYield), 0);
+	assertEquals(0, expectedDividendYield.compareTo(dividendYield));
     }
 
     @Test
@@ -138,19 +140,19 @@ public class StockServiceTest {
     }
 
     @Test
-    public void calculatePriceFor4Trades() {
+    public void calculatePriceFor4Trades() throws Exception {
 	String stockSymbol = "TEA";
 	BigDecimal stockPrice = stockService.getStockPrice(stockSymbol);
 	BigDecimal expectedStockPrice = FIFTY.add(BigDecimal.ONE);
-	assertEquals(expectedStockPrice.compareTo(stockPrice), 0);
+	assertEquals(0, expectedStockPrice.compareTo(stockPrice));
     }
 
     @Test
-    public void calculatePriceFor1Trade() {
+    public void calculatePriceFor1Trade() throws Exception {
 	String stockSymbol = "POP";
 	BigDecimal stockPrice = stockService.getStockPrice(stockSymbol);
-	BigDecimal expectedStockPrice = FIFTY;
-	assertEquals(expectedStockPrice.compareTo(stockPrice), 0);
+	BigDecimal expectedStockPrice = ONE_HUNDRED;
+	assertEquals(0, expectedStockPrice.compareTo(stockPrice));
     }
 
     @Test
@@ -166,13 +168,13 @@ public class StockServiceTest {
 	String stockSymbol = "GIN";
 	stockService.getStockPrice(stockSymbol);
     }
-    
+
     @Test
     public void calculatePriceFor2TradesWithinAnd2OutsitePriceInterval() throws Exception {
 	String stockSymbol = "JOE";
 	BigDecimal stockPrice = stockService.getStockPrice(stockSymbol);
 	BigDecimal expectedStockPrice = FOURTY;
-	assertEquals(expectedStockPrice.compareTo(stockPrice), 0);
+	assertEquals(0, expectedStockPrice.compareTo(stockPrice));
     }
 
 }

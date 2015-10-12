@@ -37,7 +37,8 @@ When precision is required but it is not possible to use BigDecimal there are ot
 For this test I have decided to use BigDecimal as there are no performance requirements.
 
 Added tests for stock price calculation.
-Fixed tests compilation  by creating required method, classes.
+Fixed tests compilation  by creating missing method, class.
+Implemented price calculation so that the tests will pass.
 
 
 

@@ -16,12 +16,12 @@ import com.jpm.stocks.validator.TradeValidator;
 public class TradeRepositoryImpl implements TradeRepository {
 
     private Map<Stock, Map<Long, List<Trade>>> stockTradeMap = new ConcurrentHashMap<Stock, Map<Long, List<Trade>>>();
-    
+
     private TradeValidator tradeValidator = new TradeValidator();
 
     public void addTrade(Trade newTrade) throws InvalidTradeException, InvalidStockException, InvalidStockSymbolException {
 	tradeValidator.validateTrade(newTrade);
-	
+
 	Stock stock = newTrade.getStock();
 	long tradeTime = newTrade.getTradeTime();
 
@@ -51,5 +51,21 @@ public class TradeRepositoryImpl implements TradeRepository {
 		return tradesAtTimestamp;
 	    }
 	}
+    }
+
+    public List<Trade> getTradesForStockAfterTimestamp(Stock stock, long time) {
+	List<Trade> tradesAfterTimestamp = new LinkedList<Trade>();
+
+	Map<Long, List<Trade>> allTradesForStock = stockTradeMap.get(stock);
+
+	if (allTradesForStock != null) {
+	    for (Map.Entry<Long, List<Trade>> entry : allTradesForStock.entrySet()) {
+		if (entry.getKey() >= time) {
+		    tradesAfterTimestamp.addAll(entry.getValue());
+		}
+	    }
+	}
+	
+	return tradesAfterTimestamp;
     }
 }
