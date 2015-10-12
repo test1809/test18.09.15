@@ -24,6 +24,7 @@ Fixed the test compilation errors by adding
 				TradeReposotory class with a method to get the trades for stock at a given time.				
 Implemented the service methods so that the tests pass.
 
+4.Refactoring
 Renamed the packages and the test methods.
 
 Added GBCESampleStockRepository class and StockRepository interface so that there will be a dependency of an abstraction and not on a class that contains sample data.
@@ -39,14 +40,15 @@ Using BigDecimal in calculations results in a much lower performance than using 
 When precision is required but it is not possible to use BigDecimal there are other options like using long or int and keep track of the decimal point.
 For this test I have decided to use BigDecimal as there are no performance requirements.
 
-4. Calculate Stock Price based on trades recorded in past 15 minutes
+
+5. Calculate Stock Price based on trades recorded in past 15 minutes
 Added tests for stock price calculation.
 Fixed tests compilation by creating missing method, exception class
 Implemented stock price calculation so that the tests will pass.
 In a more elaborate application StockRepository and TradeRepository implementations would be autowired in StockService.
 
 
-5. GBCE All Share Index calculation:
+6. GBCE All Share Index calculation:
 Added tests for all shares index calculation.
 Fixed tests compilation by creating missing method, exception class.
 
@@ -56,7 +58,7 @@ This approach is recommended because calculating the product of many numbers can
 This is less likely to occur by first calculating the logarithm of each number and then the sum of the logarithms.
 
 Java does not have a method for calculating the logarithm of a BigDecimal. There are solutions to calculate the logarithm for a BigDecimal, for example using Newton's method.
-For this test I have decided to use double values in the method that calculates the geometric mean. This solution it is only an approximation.
+For this test I have decided to use double values in the method that calculates the geometric mean. This solution is only an approximation.
 
 
 
