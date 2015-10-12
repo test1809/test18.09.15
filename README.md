@@ -11,12 +11,12 @@ After the tests passed I did a small refactoring: now there are 2 Stock construc
 The Fixed Dividend constructor parameter is required for a preferred stock and should not be provided and for a common stock.  
 Further an Abstract Stock base class could be created which could be extended by CommonStock and PreferredStock or a factory could be used for Stock instantiation.  
 
-2. P/E Ratio calculation
+2. P/E Ratio calculation  
 Added tests for calculating P/E Ratio for common stocks and preferred stocks respectively. Added a test for a preferred stock with 0 fixed dividend but not sure if such stock exists.  
 Fixed the compilation errors for the unit tests by adding the service method getPeRatio.  
 Implemented getPeRatio so that the unit tests no longer fail. Assumed that PER for preferred stocks is calculated using the fixed dividend.  
 
-3. Record a trade, with timestamp, quantity of shares, buy or sell indicator and price 
+3. Record a trade, with timestamp, quantity of shares, buy or sell indicator and price  
 Added tests for recording a buy trade and respectively a sell trade.   
 Fixed the test compilation errors by adding   
 				Trade class to represent a trade,  
