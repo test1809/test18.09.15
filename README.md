@@ -1,6 +1,6 @@
 # test18.09.15
 
-1. Dividend Yield calculation.
+1. Dividend Yield calculation
 Started by adding unit tests for calculating the Dividend Yield.
 The dividend yield is calculated differently for a common stock and preferred stock therefore I have created 1 test method for each stock type.
 Fixed the compilation errors in the unit tests by creating the missing classes.
@@ -11,7 +11,7 @@ After the tests passed I did a small refactoring: now there are 2 Stock construc
 The Fixed Dividend constructor parameter is required for a preferred stock and should not be provided and for a common stock.
 Further an Abstract Stock base class could be created which could be extended by CommonStock and PreferredStock or a factory could be used for Stock instantiation.
 
-2. P/E Ratio calculation:
+2. P/E Ratio calculation
 Added tests for calculating P/E Ratio for common stocks and preferred stocks respectively. Added a test for a preferred stock with 0 fixed dividend but not sure if such stock exists.
 Fixed the compilation errors for the unit tests by adding the service method getPeRatio.
 Implemented getPeRatio so that the unit tests no longer fail. Assumed that PER for preferred stocks is calculated using the fixed dividend.
@@ -24,7 +24,7 @@ Fixed the test compilation errors by adding
 				TradeReposotory class with a method to get the trades for stock at a given time.				
 Implemented the service methods so that the tests pass.
 
-4. Refactoring.
+4. Refactoring
 Renamed the packages and the test methods.
 Added GBCESampleStockRepository class and StockRepository interface so that there will be a dependency of an abstraction and not on a class that contains sample data.
 Similarly added TradeRepositoryImpl class and TradeRepository interface. 
@@ -33,7 +33,7 @@ Will not add an interface for StockService as I do not plan to integrate Spring 
 GBCESampleStockRepository adds the sample data in the file provided. The data is assumed to be valid. No exception is expected while loading sample data therefore the catch clauses do not need to handle the exceptions. 
 It is a bad practice to swallow the exceptions. As no logging mechanism is to be used, I left the generated printStackTrace in the catch clauses.  
 
-5. Change to use BigDecimal.
+5. Change to use BigDecimal
 I have refactored the code to change from double to BigDecimal. When exact results are required it is recommended to use BigDecimal instead of float or double. 
 The reason is that Java stores values for float or double with an inexact representation.
 Using BigDecimal in calculations results in a much lower performance than using primitive types. Primitives are also faster in calculations than boxed primitives. 
@@ -47,7 +47,7 @@ Implemented stock price calculation so that the tests will pass.
 In a more elaborate application StockRepository and TradeRepository implementations would be autowired in StockService.
 
 
-6. GBCE All Share Index calculation:
+6. GBCE All Share Index calculation
 Added tests for all shares index calculation.
 Fixed tests compilation by creating missing method, exception class.
 For calculating the geometric mean for a set of values it is recommended to calculate the arithmetic mean of the logarithm-transformed values. 
