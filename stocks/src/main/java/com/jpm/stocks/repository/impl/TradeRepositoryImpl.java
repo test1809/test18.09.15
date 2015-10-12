@@ -65,7 +65,8 @@ public class TradeRepositoryImpl implements TradeRepository {
 		}
 	    }
 	}
-	
 	return tradesAfterTimestamp;
     }
+
+    
 }

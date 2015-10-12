@@ -1,5 +1,7 @@
 package com.jpm.stocks.repository;
 
+import java.util.Set;
+
 import com.jpm.stocks.exception.InvalidStockException;
 import com.jpm.stocks.exception.InvalidStockSymbolException;
 import com.jpm.stocks.exception.StockNotFoundException;
@@ -9,5 +11,7 @@ public interface StockRepository {
     Stock getStock(String stockSymbol) throws StockNotFoundException;
 
     void addStock(Stock stock) throws InvalidStockException, InvalidStockSymbolException;
+    
+    Set<Stock> getAllStocks();
 
 }

@@ -2,7 +2,9 @@ package com.jpm.stocks.repository.impl;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.jpm.stocks.exception.InvalidStockException;
@@ -57,6 +59,10 @@ public class GBCESampleStockRepository implements StockRepository {
     private BigDecimal getBigDecimal(long value) {
 	BigDecimal bigDecimal = new BigDecimal(value, MATH_CONTEXT);
 	return bigDecimal;
+    }
+
+    public Set<Stock> getAllStocks() {
+	return new HashSet<Stock>(stocks.values());
     }
 
 }

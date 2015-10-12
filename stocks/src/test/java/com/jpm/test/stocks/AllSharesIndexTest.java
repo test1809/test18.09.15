@@ -11,7 +11,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.jpm.stocks.exception.IndexWithoutTradesWithinPriceIntervalException;
+import com.jpm.stocks.exception.NoTradesWithinIntervalException;
 import com.jpm.stocks.model.Stock;
 import com.jpm.stocks.model.Trade;
 import com.jpm.stocks.model.TradeType;
@@ -63,7 +63,7 @@ public class AllSharesIndexTest {
 
     @Test
     public void calculateAllSharesIndexForEmptyTradeRepository() throws Exception {
-	exception.expect(IndexWithoutTradesWithinPriceIntervalException.class);
+	exception.expect(NoTradesWithinIntervalException.class);
 	
 	resetTradeRepository();
 	stockService.getAllSharesIndex();
@@ -104,5 +104,4 @@ public class AllSharesIndexTest {
 	BigDecimal expectedAllSharesIndex =  new BigDecimal(25, MATH_CONTEXT);;
 	assertEquals(0, expectedAllSharesIndex.compareTo(allSharesIndex));
     }
-
 }

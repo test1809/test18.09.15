@@ -13,7 +13,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.jpm.stocks.exception.StockWithoutTradesWithinPriceIntervalException;
 import com.jpm.stocks.model.Stock;
 import com.jpm.stocks.model.StockType;
 import com.jpm.stocks.model.Trade;
@@ -105,11 +104,11 @@ public class StockServiceTest {
 
     @Test
     public void calculatePerForCommonStock() {
-	BigDecimal perRatio = stockService.getPerRatio(commonStock, TWENTY);
+	BigDecimal peRatio = stockService.getPeRatio(commonStock, TWENTY);
 	BigDecimal expectedPerRatio = TWENTY.divide(commonStock.getLastDividend(), SCALE, ROUNDING_MODE);
 
-	assertEquals(0, expectedPerRatio.compareTo(perRatio));
-	assertEquals(SCALE, perRatio.scale());
+	assertEquals(0, expectedPerRatio.compareTo(peRatio));
+	assertEquals(SCALE, peRatio.scale());
     }
 
     @Test
@@ -117,26 +116,26 @@ public class StockServiceTest {
 	String stockSymbol = "ZERO.DIVIDEND";
 	Stock stock = new Stock(stockSymbol, BigDecimal.ZERO, ONE_HUNDRED);
 
-	BigDecimal perRatio = stockService.getPerRatio(stock, TWENTY);
-	assertNull(perRatio);
+	BigDecimal peRatio = stockService.getPeRatio(stock, TWENTY);
+	assertNull(peRatio);
     }
 
     @Test
     public void calculatePerForPreferredStock() {
-	BigDecimal perRatio = stockService.getPerRatio(preferredStock, TWENTY);
+	BigDecimal peRatio = stockService.getPeRatio(preferredStock, TWENTY);
 	BigDecimal expectedPerRatio = TWENTY.divide(preferredStock.getFixedDividend().multiply(preferredStock.getParValue(), MATH_CONTEXT), SCALE,
 		ROUNDING_MODE);
 
-	assertEquals(0, expectedPerRatio.compareTo(perRatio));
-	assertEquals(SCALE, perRatio.scale());
+	assertEquals(0, expectedPerRatio.compareTo(peRatio));
+	assertEquals(SCALE, peRatio.scale());
     }
 
     @Test
     public void calculatePerForPreferredStockWithZeroFixedDividend() {
 	String stockSymbol = "ZERO.DIVIDEND";
 	Stock stock = new Stock(stockSymbol, new BigDecimal(8, MATH_CONTEXT), ONE_HUNDRED, BigDecimal.ZERO);
-	BigDecimal perRatio = stockService.getPerRatio(stock, TWENTY);
-	assertNull(perRatio);
+	BigDecimal peRatio = stockService.getPeRatio(stock, TWENTY);
+	assertNull(peRatio);
     }
 
     @Test
@@ -157,16 +156,16 @@ public class StockServiceTest {
 
     @Test
     public void calculatePriceForStockWithoutTrades() throws Exception {
-	exception.expect(StockWithoutTradesWithinPriceIntervalException.class);
 	String stockSymbol = "ALE";
-	stockService.getStockPrice(stockSymbol);
+	BigDecimal stockPrice = stockService.getStockPrice(stockSymbol);
+	assertNull(stockPrice);
     }
 
     @Test
     public void calculatePriceForStockWithoutTradesWithinPriceInterval() throws Exception {
-	exception.expect(StockWithoutTradesWithinPriceIntervalException.class);
 	String stockSymbol = "GIN";
-	stockService.getStockPrice(stockSymbol);
+	BigDecimal stockPrice  = stockService.getStockPrice(stockSymbol);
+	assertNull(stockPrice);
     }
 
     @Test
