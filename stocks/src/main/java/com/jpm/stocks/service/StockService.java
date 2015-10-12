@@ -103,4 +103,9 @@ public class StockService {
 	tradeRepository.addTrade(trade);
     }
 
+    public BigDecimal getAllSharesIndex() {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
 }

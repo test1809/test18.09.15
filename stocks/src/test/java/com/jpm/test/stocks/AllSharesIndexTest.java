@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.Calendar;
 
 import org.junit.Before;
@@ -12,8 +11,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.jpm.stocks.exception.StockNotFoundException;
-import com.jpm.stocks.exception.StockWithoutTradesWithinPriceIntervalException;
+import com.jpm.stocks.exception.IndexWithoutTradesWithinPriceIntervalException;
 import com.jpm.stocks.model.Stock;
 import com.jpm.stocks.model.Trade;
 import com.jpm.stocks.model.TradeType;
@@ -68,7 +66,6 @@ public class AllSharesIndexTest {
 	exception.expect(IndexWithoutTradesWithinPriceIntervalException.class);
 	
 	resetTradeRepository();
-	
 	stockService.getAllSharesIndex();
     }
 
