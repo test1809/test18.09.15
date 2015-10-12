@@ -24,9 +24,8 @@ Fixed the test compilation errors by adding
 				TradeReposotory class with a method to get the trades for stock at a given time.				
 Implemented the service methods so that the tests pass.
 
-4. Refactoring
+4. Refactoring.
 Renamed the packages and the test methods.
-
 Added GBCESampleStockRepository class and StockRepository interface so that there will be a dependency of an abstraction and not on a class that contains sample data.
 Similarly added TradeRepositoryImpl class and TradeRepository interface. 
 This way the repository implementation could be switched easily and a database repository could be used instead of the sample data repository for stocks.
@@ -34,12 +33,12 @@ Will not add an interface for StockService as I do not plan to integrate Spring 
 GBCESampleStockRepository adds the sample data in the file provided. The data is assumed to be valid. No exception is expected while loading sample data therefore the catch clauses do not need to handle the exceptions. 
 It is a bad practice to swallow the exceptions. As no logging mechanism is to be used, I left the generated printStackTrace in the catch clauses.  
 
+5. Change to use BigDecimal.
 I have refactored the code to change from double to BigDecimal. When exact results are required it is recommended to use BigDecimal instead of float or double. 
 The reason is that Java stores values for float or double with an inexact representation.
 Using BigDecimal in calculations results in a much lower performance than using primitive types. Primitives are also faster in calculations than boxed primitives. 
 When precision is required but it is not possible to use BigDecimal there are other options like using long or int and keep track of the decimal point.
 For this test I have decided to use BigDecimal as there are no performance requirements.
-
 
 5. Calculate Stock Price based on trades recorded in past 15 minutes
 Added tests for stock price calculation.
@@ -51,12 +50,10 @@ In a more elaborate application StockRepository and TradeRepository implementati
 6. GBCE All Share Index calculation:
 Added tests for all shares index calculation.
 Fixed tests compilation by creating missing method, exception class.
-
 For calculating the geometric mean for a set of values it is recommended to calculate the arithmetic mean of the logarithm-transformed values. 
 After this, by using the exponentiation, we can get the result in the original scale. 
 This approach is recommended because calculating the product of many numbers can lead to an arithmetic overflow or an arithmetic underflow. 
 This is less likely to occur by first calculating the logarithm of each number and then the sum of the logarithms.
-
 Java does not have a method for calculating the logarithm of a BigDecimal. There are solutions to calculate the logarithm for a BigDecimal, for example using Newton's method.
 For this test I have decided to use double values in the method that calculates the geometric mean. This solution is only an approximation.
 
