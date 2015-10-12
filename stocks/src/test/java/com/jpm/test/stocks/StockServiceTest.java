@@ -82,8 +82,8 @@ public class StockServiceTest {
 
     @Test
     public void stockTypeCorrectlyAssigned() {
-	assertEquals(commonStock.getType(), StockType.COMMON);
-	assertEquals(preferredStock.getType(), StockType.PREFERRED);
+	assertEquals(StockType.COMMON, commonStock.getType());
+	assertEquals(StockType.PREFERRED, preferredStock.getType());
     }
 
     @Test
@@ -108,8 +108,8 @@ public class StockServiceTest {
 	BigDecimal perRatio = stockService.getPerRatio(commonStock, TWENTY);
 	BigDecimal expectedPerRatio = TWENTY.divide(commonStock.getLastDividend(), SCALE, ROUNDING_MODE);
 
-	assertEquals(expectedPerRatio.compareTo(perRatio), 0);
-	assertEquals(perRatio.scale(), SCALE);
+	assertEquals(0, expectedPerRatio.compareTo(perRatio));
+	assertEquals(SCALE, perRatio.scale());
     }
 
     @Test
@@ -127,8 +127,8 @@ public class StockServiceTest {
 	BigDecimal expectedPerRatio = TWENTY.divide(preferredStock.getFixedDividend().multiply(preferredStock.getParValue(), MATH_CONTEXT), SCALE,
 		ROUNDING_MODE);
 
-	assertEquals(expectedPerRatio.compareTo(perRatio), 0);
-	assertEquals(perRatio.scale(), SCALE);
+	assertEquals(0, expectedPerRatio.compareTo(perRatio));
+	assertEquals(SCALE, perRatio.scale());
     }
 
     @Test
@@ -176,5 +176,4 @@ public class StockServiceTest {
 	BigDecimal expectedStockPrice = FOURTY;
 	assertEquals(0, expectedStockPrice.compareTo(stockPrice));
     }
-
 }

@@ -6,6 +6,9 @@ import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.List;
 
+import com.jpm.stocks.exception.InvalidStockException;
+import com.jpm.stocks.exception.InvalidStockSymbolException;
+import com.jpm.stocks.exception.InvalidTradeException;
 import com.jpm.stocks.exception.StockNotFoundException;
 import com.jpm.stocks.exception.StockWithoutTradesWithinPriceIntervalException;
 import com.jpm.stocks.model.Stock;
@@ -18,7 +21,6 @@ public class StockService {
     private static final RoundingMode ROUNDING_MODE = MATH_CONTEXT.getRoundingMode();
     private static final int SCALE = 2;
     private static final int MAX_MINUTES_FOR_PRICE_CALCULATION = 15;
-
 
     private StockRepository stockRepository;
     private TradeRepository tradeRepository;
@@ -63,8 +65,11 @@ public class StockService {
     }
 
     public BigDecimal getStockPrice(String stockSymbol) throws StockNotFoundException, StockWithoutTradesWithinPriceIntervalException {
-	Stock stock = stockRepository.getStock(stockSymbol);
+	Stock stock = getStock(stockSymbol);
+	return getStockPrice(stock);
+    }
 
+    private BigDecimal getStockPrice(Stock stock) throws StockWithoutTradesWithinPriceIntervalException {
 	Calendar calendar = Calendar.getInstance();
 	calendar.add(Calendar.MINUTE, -MAX_MINUTES_FOR_PRICE_CALCULATION);
 	long timeLimitForPrice = calendar.getTimeInMillis();
@@ -88,6 +93,14 @@ public class StockService {
 	}
 
 	return value.divide(new BigDecimal(sumShares, MATH_CONTEXT), SCALE, ROUNDING_MODE);
+    }
+
+    public Stock getStock(String stockSymbol) throws StockNotFoundException {
+	return stockRepository.getStock(stockSymbol);
+    }
+
+    public void addTrade(Trade trade) throws InvalidTradeException, InvalidStockException, InvalidStockSymbolException {
+	tradeRepository.addTrade(trade);
     }
 
 }

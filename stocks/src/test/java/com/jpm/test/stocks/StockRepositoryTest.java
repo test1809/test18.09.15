@@ -34,7 +34,7 @@ public class StockRepositoryTest {
     public void commonStockHasNullFixedDividend() throws StockNotFoundException {
 	String stockSymbol = "TEA";
 	Stock stock = stockRepository.getStock(stockSymbol);
-	assertEquals(stock.getType(), StockType.COMMON);
+	assertEquals(StockType.COMMON, stock.getType());
 	assertNull(stock.getFixedDividend());
     }
 
@@ -42,7 +42,7 @@ public class StockRepositoryTest {
     public void preferredStockHasNotNullFixedDividend() throws StockNotFoundException {
 	String stockSymbol = "GIN";
 	Stock stock = stockRepository.getStock(stockSymbol);
-	assertEquals(stock.getType(), StockType.PREFERRED);
+	assertEquals(StockType.PREFERRED, stock.getType());
 	assertNotNull(stock.getFixedDividend());
 	assertEquals(0.02, stock.getFixedDividend().doubleValue(), 0.01);
     }
@@ -62,7 +62,7 @@ public class StockRepositoryTest {
 	stockRepository.addStock(stock);
 	stock = stockRepository.getStock(stockSymbol);
 	assertNotNull(stock);
-	assertEquals(stock.getType(), StockType.COMMON);
+	assertEquals(StockType.COMMON, stock.getType());
     }
 
     @Test
